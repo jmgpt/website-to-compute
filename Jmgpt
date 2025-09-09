@@ -1,0 +1,71 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Mic, Image, Video } from "lucide-react";
+
+export default function Jmgpt() {
+  const [prompt, setPrompt] = useState("");
+  const [image, setImage] = useState(null);
+  const [video, setVideo] = useState(null);
+  const [chat, setChat] = useState([]);
+
+  const generateImage = async () => {
+    // Hier koppel je een AI-image API (bijv. OpenAI DALL·E of Stable Diffusion)
+    alert("Afbeelding generatie komt hier!");
+  };
+
+  const generateVideo = async () => {
+    // Hier koppel je een ASMR video generator (bijv. via ffmpeg + AI audio)
+    alert("ASMR video generatie komt hier!");
+  };
+
+  const handleChat = async () => {
+    // Hier koppel je een AI-chat + TTS (Text to Speech)
+    setChat([...chat, { sender: "user", text: prompt }]);
+    setChat([...chat, { sender: "bot", text: "Jmgpt antwoordt met geluid..." }]);
+    setPrompt("");
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 to-indigo-700 text-white p-6">
+      <h1 className="text-4xl font-bold text-center mb-10">🌌 Jmgpt – AI Generator</h1>
+
+      <div className="grid md:grid-cols-3 gap-6">
+        {/* Afbeelding Generator */}
+        <Card className="bg-white/10 backdrop-blur-lg p-4 rounded-2xl">
+          <CardContent>
+            <h2 className="text-xl font-semibold flex items-center gap-2"><Image /> Afbeelding Generator</h2>
+            <Input className="mt-4 text-black" placeholder="Type je prompt..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+            <Button onClick={generateImage} className="mt-4 w-full">Genereer Afbeelding</Button>
+            {image && <img src={image} alt="Generated" className="mt-4 rounded-xl" />}
+          </CardContent>
+        </Card>
+
+        {/* ASMR Video Generator */}
+        <Card className="bg-white/10 backdrop-blur-lg p-4 rounded-2xl">
+          <CardContent>
+            <h2 className="text-xl font-semibold flex items-center gap-2"><Video /> ASMR Video Generator</h2>
+            <Input className="mt-4 text-black" placeholder="Type je idee voor ASMR video..." />
+            <Button onClick={generateVideo} className="mt-4 w-full">Genereer Video</Button>
+            {video && <video controls className="mt-4 rounded-xl"><source src={video} type="video/mp4" /></video>}
+          </CardContent>
+        </Card>
+
+        {/* Chatbot met geluid */}
+        <Card className="bg-white/10 backdrop-blur-lg p-4 rounded-2xl">
+          <CardContent>
+            <h2 className="text-xl font-semibold flex items-center gap-2"><Mic /> Jmgpt Chatbot</h2>
+            <div className="h-40 overflow-y-auto bg-black/30 p-2 rounded-xl mt-2">
+              {chat.map((msg, i) => (
+                <p key={i} className={msg.sender === "user" ? "text-right text-blue-300" : "text-left text-green-300"}>{msg.text}</p>
+              ))}
+            </div>
+            <Input className="mt-4 text-black" placeholder="Typ een bericht..." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+            <Button onClick={handleChat} className="mt-4 w-full">Stuur</Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
